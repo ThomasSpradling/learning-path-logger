@@ -1,6 +1,8 @@
 import NavBar from '@/components/ui/NavBar';
 import './globals.css';
 import { Inter } from 'next/font/google';
+import { SessionProvider } from 'next-auth/react';
+import Providers from '@/components/Providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,8 +19,10 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className='flex flex-col h-screen'>
-        <NavBar />
-        {children}
+        <Providers>
+          <NavBar />
+          {children}
+        </Providers>
       </body>
     </html>
   );

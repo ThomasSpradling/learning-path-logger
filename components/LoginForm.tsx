@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { signIn } from 'next-auth/react';
 
 export default function LoginForm() {
   const [formData, setFormData] = useState<{
@@ -15,6 +16,16 @@ export default function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      await signIn('credentials', {
+        username: formData.username,
+        password: formData.password,
+        redirect: true,
+        callbackUrl: '/home',
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

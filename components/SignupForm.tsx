@@ -1,5 +1,6 @@
 'use client';
 
+import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
 export default function Signup() {
@@ -15,8 +16,30 @@ export default function Signup() {
     remember: false,
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const signUpRes = await fetch('http://localhost:3000/api/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Types': 'application/json',
+      },
+      body: JSON.stringify({
+        username: formData?.username,
+        email: formData?.email,
+        password: formData?.password,
+      }),
+    });
+
+    try {
+      await signIn('credentials', {
+        username: formData.username,
+        password: formData.password,
+        redirect: true,
+        callbackUrl: '/home',
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
