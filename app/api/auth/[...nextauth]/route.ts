@@ -12,7 +12,7 @@ const handler = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
-        const loginRes = await fetch('http://localhost:3000/api/login', {
+        const loginRes = await fetch(`${process.env.NEXTAUTH_URL}/api/login`, {
           method: 'POST',
           headers: {
             'Content-Types': 'application/json',
