@@ -15,9 +15,7 @@ export default function PreqGraph({
       .then((data) => {
         setProgress(data);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, [metadata.id]);
 
   if (progress?.nodes && progress?.edges) {

@@ -53,12 +53,9 @@ function Flow({
     initialEdges
   );
 
-  // const [nodes, setNodes] = useNodesState(layoutedNodes);
-  // const [edges, setEdges] = useEdgesState(layoutedEdges);
-
   return (
     <ReactFlow
-      nodes={layoutedNodes}
+      nodes={layoutedNodes as any}
       edges={layoutedEdges}
       panOnScroll
       zoomOnScroll={false}

@@ -15,9 +15,7 @@ export default function ScheduleList({
       .then((data) => {
         setSchedule(data);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, [metadata.id]);
   return (
     <div className='border-2 border-red-500 w-2/3 border-dashed mt-10 p-10'>

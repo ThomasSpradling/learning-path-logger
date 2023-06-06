@@ -15,12 +15,9 @@ export default function Signup() {
     remember: false,
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
   };
-
-  console.log(formData);
 
   return (
     <div className='bg-white w-4/12 p-10 rounded-lg mx-auto'>

@@ -13,9 +13,8 @@ export default function LoginForm() {
     remember: false,
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
   };
 
   return (

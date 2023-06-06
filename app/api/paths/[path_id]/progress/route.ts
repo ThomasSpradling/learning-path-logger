@@ -61,7 +61,6 @@ export async function GET(request: Request, { params }: { params: Params }) {
     }))
   );
 
-  console.log(start, end);
   edges.push(
     ...[
       {
