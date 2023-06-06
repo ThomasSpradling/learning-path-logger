@@ -1,7 +1,6 @@
 import { LearningPathThumbnail } from '@/types/LearningPathTypes';
 import LearningPathListEntry from './LearningPathListEntry';
 import AddPlaceholder from './AddPlaceholder';
-import ScheduleList from './ScheduleList';
 
 type Props = {
   learningPaths: LearningPathThumbnail[];
@@ -16,6 +15,7 @@ export default function LearningPathList({ learningPaths }: Props) {
           learningPath={learningPath}
         />
       ))}
+      <AddPlaceholder />
     </div>
   );
 }

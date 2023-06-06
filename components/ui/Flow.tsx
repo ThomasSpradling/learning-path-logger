@@ -3,13 +3,7 @@ import ReactFlow, { useEdgesState, useNodesState } from 'reactflow';
 
 import 'reactflow/dist/style.css';
 import dagre from 'dagre';
-
-// const initialNodes = [
-//   { id: '1', position: { x: 130, y: 50 }, data: { label: '1' } },
-//   { id: '2', position: { x: 130, y: 200 }, data: { label: '2' } },
-// ];
-
-// const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+import { Progress } from '@/types/LearningPathTypes';
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -17,9 +11,11 @@ dagreGraph.setDefaultEdgeLabel(() => ({}));
 const nodeWidth = 172;
 const nodeHeight = 36;
 
-const getLayoutedElements = (nodes, edges, direction = 'TB') => {
-  const isHorizontal = direction === 'LB';
-  dagreGraph.setGraph({ rankdir: direction });
+const getLayoutedElements = (
+  nodes: Progress['nodes'],
+  edges: Progress['edges']
+) => {
+  dagreGraph.setGraph({});
 
   nodes.forEach((node) => {
     dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
@@ -33,8 +29,6 @@ const getLayoutedElements = (nodes, edges, direction = 'TB') => {
 
   nodes.forEach((node) => {
     const nodeWithPosition = dagreGraph.node(node.id);
-    node.targetPosition = isHorizontal ? 'left' : 'top';
-    node.sourcePosition = isHorizontal ? 'right' : 'bottom';
 
     node.position = {
       x: nodeWithPosition.x - nodeWidth / 2,
@@ -47,37 +41,25 @@ const getLayoutedElements = (nodes, edges, direction = 'TB') => {
   return { nodes, edges };
 };
 
-function Flow({ initialNodes, initialEdges }) {
+function Flow({
+  initialNodes,
+  initialEdges,
+}: {
+  initialNodes: Progress['nodes'];
+  initialEdges: Progress['edges'];
+}) {
   const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
     initialNodes,
     initialEdges
   );
 
-  const [nodes, setNodes] = useNodesState(layoutedNodes);
-  const [edges, setEdges] = useEdgesState(layoutedEdges);
-
-  // const onLayout = useCallback(
-  //   (direction) => {
-  //     const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
-  //       nodes,
-  //       edges,
-  //       direction
-  //     );
-
-  //     setNodes([...layoutedNodes]);
-  //     setEdges([...layoutedEdges]);
-  //   },
-  //   [nodes, edges]
-  // );
+  // const [nodes, setNodes] = useNodesState(layoutedNodes);
+  // const [edges, setEdges] = useEdgesState(layoutedEdges);
 
   return (
     <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      // onNodesChange={onNodesChange}
-      // onEdgesChange={onEdgesChange}
-      // onConnect={onConnect}
-
+      nodes={layoutedNodes}
+      edges={layoutedEdges}
       panOnScroll
       zoomOnScroll={false}
       zoomOnPinch={false}

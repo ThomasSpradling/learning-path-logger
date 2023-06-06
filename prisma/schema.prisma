@@ -76,6 +76,7 @@ model Subject {
   phaseId         String
 
   nodeType        String        @default("")
+  complete        Boolean       @default(false)
 }
 
 model Phase {
