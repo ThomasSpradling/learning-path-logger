@@ -9,3 +9,83 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  username      String    @unique
+  email         String?   @unique
+  password      String    @default("")
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
+  learningPaths LearningPath[]
+}
+
+model LearningPath {
+  id      String    @id @default(cuid())
+  title   String
+  nodes   Subject[]
+  phases  Phase[]
+
+  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String
+
+  backdrop String
+  complete Boolean
+}
+
+model Subject {
+  id              String        @id @default(cuid())
+  title           String
+  content         String?
+  prerequisites   Subject[]     @relation("Prerequisites")
+  children        Subject[]     @relation("Prerequisites")
+
+  learningPath    LearningPath  @relation(fields: [learningPathId], references: [id], onDelete: Cascade)
+  learningPathId  String
+
+  phase           Phase         @relation(fields: [phaseId], references: [id])
+  phaseId         String
+
+  nodeType        String        @default("")
+}
+
+model Phase {
+  id  String @id @default(cuid())
+  title String
+  order Int?
+  subjects Subject[]
+
+  learningPath LearningPath @relation(fields: [learningPathId], references: [id], onDelete: Cascade)
+  learningPathId String
+}
+
+

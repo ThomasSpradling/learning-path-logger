@@ -2,6 +2,7 @@ import LearningPathList from '@/components/LearningPathList';
 import { Button } from '@/components/ui/Button';
 import { LearningPathThumbnail } from '@/types/LearningPathTypes';
 import Link from 'next/link';
+import prisma from '@/lib/db';
 
 const learningPaths: LearningPathThumbnail[] = [
   {
@@ -75,6 +76,7 @@ const learningPaths: LearningPathThumbnail[] = [
 ];
 
 export default function Dashboard() {
+  console.log(prisma.user.findMany({}));
   return (
     <main className='flex-grow bg-gray-100 flex items-center flex-col overflow-auto'>
       <div className='flex justify-around items-end pt-14 pb-8 border-b-2 border-teal-600 bg-white w-full sticky bottom-4'>

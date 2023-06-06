@@ -1,9 +1,6 @@
-'use client';
-
 import { SubjectNode } from '@/types/LearningPathTypes';
 import Flow from './ui/Flow';
 import _ from 'underscore';
-import { useEffect } from 'react';
 
 type NodeRawData = { [key: string]: SubjectNode[] };
 
