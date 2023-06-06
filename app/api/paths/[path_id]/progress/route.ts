@@ -1,5 +1,6 @@
 import prisma from '@/lib/db';
-import { Progress } from '@/types/LearningPathTypes';
+import { Progress, SubjectNode } from '@/types/LearningPathTypes';
+import { Subject } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
 type Params = {
@@ -7,7 +8,14 @@ type Params = {
 };
 
 export async function GET(request: Request, { params }: { params: Params }) {
-  const nodes = await prisma.subject.findMany({
+  const nodes: {
+    title: string;
+    id: string;
+    nodeType: string;
+    prerequisites: {
+      id: string;
+    }[];
+  }[] = await prisma.subject.findMany({
     where: {
       learningPathId: params.path_id || undefined,
     },
@@ -27,7 +35,15 @@ export async function GET(request: Request, { params }: { params: Params }) {
   let end = '';
 
   const transformedNodes: Progress['nodes'] = nodes.map(
-    ({ id, title, nodeType }) => {
+    ({
+      id,
+      title,
+      nodeType,
+    }: {
+      id: string;
+      title: string;
+      nodeType: string;
+    }) => {
       if (nodeType === 'start') start = id;
       if (nodeType === 'end') end = id;
       return {
@@ -53,12 +69,20 @@ export async function GET(request: Request, { params }: { params: Params }) {
     type: 'output',
   });
 
-  const edges = nodes.flatMap((subject) =>
-    subject.prerequisites.map((prerequisite) => ({
-      id: `edge--${subject.id}__${prerequisite.id}`,
-      target: `node--${subject.id}`,
-      source: `node--${prerequisite.id}`,
-    }))
+  const edges = nodes.flatMap(
+    (subject: {
+      title: string;
+      id: string;
+      nodeType: string;
+      prerequisites: {
+        id: string;
+      }[];
+    }) =>
+      subject.prerequisites.map((prerequisite) => ({
+        id: `edge--${subject.id}__${prerequisite.id}`,
+        target: `node--${subject.id}`,
+        source: `node--${prerequisite.id}`,
+      }))
   );
 
   edges.push(

@@ -23,6 +23,7 @@ export type SubjectNode = {
   id: string;
   title: string;
   type?: 'input' | 'output' | null;
+  prerequisites?: SubjectNode[];
 };
 
 export type Schedule = Phase[];
