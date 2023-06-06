@@ -21,5 +21,5 @@ export type SubjectItem = {
 export type SubjectNode = {
   id: string;
   title: string;
-  order?: number;
+  type?: 'input' | 'output' | null;
 };

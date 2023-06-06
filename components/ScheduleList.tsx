@@ -26,7 +26,7 @@ const phaseMock: Phase[] = [
 
 export default function ScheduleList({ learningPathId }: Props) {
   return (
-    <div className='border-2 border-red-500 w-7/12 border-dashed mt-10 p-10'>
+    <div className='border-2 border-red-500 w-2/3 border-dashed mt-10 p-10'>
       {phaseMock.map((phase) => (
         <PhaseListEntry key={phase.id} phase={phase} />
       ))}
