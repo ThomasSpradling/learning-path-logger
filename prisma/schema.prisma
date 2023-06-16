@@ -52,8 +52,8 @@ model User {
 model LearningPath {
   id      String    @id @default(cuid())
   title   String
-  nodes   Subject[]
-  phases  Phase[]
+  subjects  Subject[]
+  units     Unit[]
 
   user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  String
@@ -72,17 +72,21 @@ model Subject {
   learningPath    LearningPath  @relation(fields: [learningPathId], references: [id], onDelete: Cascade)
   learningPathId  String
 
-  phase           Phase         @relation(fields: [phaseId], references: [id])
-  phaseId         String
+  unit           Unit           @relation(fields: [unitId], references: [id])
+  unitId         String
 
-  nodeType        String        @default("")
-  complete        Boolean       @default(false)
+  complete       Boolean       @default(false)
+
+  order Int @default(0)
+
+  prereqsHaveStart Boolean    @default(false)
+  childrenHaveEnd Boolean    @default(false)
 }
 
-model Phase {
+model Unit {
   id  String @id @default(cuid())
   title String
-  order Int?
+  order Int
   subjects Subject[]
 
   learningPath LearningPath @relation(fields: [learningPathId], references: [id], onDelete: Cascade)

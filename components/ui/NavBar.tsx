@@ -12,7 +12,7 @@ export default function NavBar() {
   };
 
   return (
-    <nav className='flex w-full bg-teal-200 p-6 z-50'>
+    <nav className='flex w-full bg-thisle p-6 z-20 text-raisinBlack'>
       <div className='text-lg font-bold'>
         <Link href='/home'>Logo</Link>
       </div>
@@ -20,13 +20,13 @@ export default function NavBar() {
         <div className=''>
           <Link
             href='/dashboard'
-            className='ml-6 cursor-pointer inline-block text-teal-600 hover:text-teal-800'
+            className='ml-6 cursor-pointer inline-block text-englishViolet hover:text-raisinBlack'
           >
             Learning Plans
           </Link>
           <Link
             href='/schedule'
-            className='ml-6 cursor-pointer inline-block text-teal-600 hover:text-teal-800'
+            className='ml-6 cursor-pointer inline-block text-englishViolet hover:text-raisinBlack'
           >
             Schedule
           </Link>
@@ -35,12 +35,12 @@ export default function NavBar() {
         {status === 'authenticated' ? (
           <div>
             <button
-              className='ml-6 cursor-pointer inline-block text-teal-600 hover:text-teal-800'
+              className='ml-6 cursor-pointer inline-block text-englishViolet hover:text-raisinBlack'
               onClick={handleSignOut}
             >
               Sign Out
             </button>
-            <div className='ml-6 cursor-pointer text-teal-600 hover:text-teal-800 inline-flex items-center gap-5'>
+            <div className='ml-6 cursor-pointer text-englishViolet hover:text-raisinBlack inline-flex items-center gap-5'>
               <span>{session.user?.email}</span>
               <FaUser className='text-xl' />
             </div>
@@ -49,13 +49,13 @@ export default function NavBar() {
           <div>
             <Link
               href='/login'
-              className='ml-6 cursor-pointer inline-block text-teal-600 hover:text-teal-800'
+              className='ml-6 cursor-pointer inline-block text-englishViolet hover:text-raisinBlack'
             >
               Login
             </Link>
             <Link
               href='/signup'
-              className='ml-6 cursor-pointer inline-block text-teal-600 hover:text-teal-800'
+              className='ml-6 cursor-pointer inline-block text-englishViolet hover:text-raisinBlack'
             >
               Signup
             </Link>

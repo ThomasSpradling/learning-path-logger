@@ -1,7 +1,6 @@
 import NavBar from '@/components/ui/NavBar';
 import './globals.css';
 import { Inter } from 'next/font/google';
-import { SessionProvider } from 'next-auth/react';
 import Providers from '@/components/Providers';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -11,7 +10,7 @@ export const metadata = {
   description: 'A planning app to guide your learning of subjects.',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
