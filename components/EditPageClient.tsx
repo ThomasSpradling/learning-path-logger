@@ -141,7 +141,7 @@ export default function EditPageClient({
 
       {!isEdit &&
         (content.length > 0 ? (
-          <p className='whitespace-pre'>{content}</p>
+          <p className='whitespace-pre-wrap'>{content}</p>
         ) : (
           <div className='w-full h-48 border-4 border-gray-300 border-dashed flex flex-col items-center justify-center text-gray-400 gap-10'>
             Looks like there is nothing here...
