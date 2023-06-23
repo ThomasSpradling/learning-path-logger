@@ -56,6 +56,7 @@ export default function Signup({ cb }: { cb: string }) {
         // callbackUrl: cb,
       });
     } catch (e) {
+      console.log('cred', e);
       toast({
         title: 'Error',
         description:
