@@ -24,8 +24,8 @@ export default function LoginForm({ cb }: { cb: string }) {
       await signIn('credentials', {
         username: data.username,
         password: data.password,
-        // redirect: true,
-        // callbackUrl: cb,
+        redirect: true,
+        callbackUrl: cb,
       });
     } catch (e) {
       console.log(e);
