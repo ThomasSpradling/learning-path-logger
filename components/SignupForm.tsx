@@ -9,7 +9,7 @@ import axios, { AxiosError } from 'axios';
 import { Loader2 } from 'lucide-react';
 import { Icons } from './Icons';
 
-export default function Signup() {
+export default function Signup({ cb }: { cb: string }) {
   const {
     register,
     handleSubmit,
@@ -53,7 +53,7 @@ export default function Signup() {
         username: data.username,
         password: data.password,
         redirect: true,
-        callbackUrl: '/home',
+        callbackUrl: cb,
       });
     } catch (e) {
       toast({

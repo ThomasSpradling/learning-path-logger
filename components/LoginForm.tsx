@@ -8,7 +8,7 @@ import { LoginSchemaType, loginSchema } from '@/lib/validators/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 
-export default function LoginForm() {
+export default function LoginForm({ cb }: { cb: string }) {
   const {
     register,
     handleSubmit,
@@ -25,7 +25,7 @@ export default function LoginForm() {
         username: data.username,
         password: data.password,
         redirect: true,
-        callbackUrl: '/home',
+        callbackUrl: cb,
       });
     } catch (e) {
       console.log(e);
