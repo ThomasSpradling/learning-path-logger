@@ -12,7 +12,7 @@ export default function Home() {
       </p>
       <Link
         href='/dashboard'
-        className='rounded-lg bg-teal-700 px-4 py-3 text-white hover:text-teal-950 hover:bg-teal-200'
+        className='rounded-lg bg-teal-700 px-4 py-3 text-white hover:opacity-80'
       >
         Get started
       </Link>

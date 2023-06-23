@@ -16,14 +16,12 @@ export async function POST(req: NextRequest) {
   try {
     const learningPath = await prisma.learningPath.create({
       data: {
-        title: title,
+        title,
         backdrop: '',
         complete: false,
-        userId: userId,
+        userId,
       },
     });
-
-    console.log('SUBJECTS', subjects);
 
     const units = subjects
       .map((subject) => subject.unit)
@@ -32,8 +30,8 @@ export async function POST(req: NextRequest) {
       );
 
     await Promise.all(
-      units.map(async (unit) => {
-        await prisma.unit.upsert({
+      units.map((unit) => {
+        return prisma.unit.upsert({
           where: { id: unit.id },
           create: {
             id: unit.id,
@@ -46,12 +44,9 @@ export async function POST(req: NextRequest) {
       })
     );
 
-    // Create subjects and units
     const createdSubjects = await Promise.all(
-      subjects.map(async (subject) => {
-        const { id, title, complete, unit, order } = subject;
-
-        const createdSubject = await prisma.subject.create({
+      subjects.map(({ id, title, complete, unit, order }) => {
+        return prisma.subject.create({
           data: {
             id,
             title,
@@ -65,62 +60,39 @@ export async function POST(req: NextRequest) {
             },
           },
         });
-
-        return createdSubject;
       })
     );
 
-    console.log('CREATED', createdSubjects);
-
-    const updateChildren = async () => {
-      await Promise.all(
-        subjects.map(async (subject, index) => {
-          const { children } = subject;
-
-          if (children) {
-            await prisma.subject.update({
-              where: { id: createdSubjects[index].id },
-              data: {
-                children: {
-                  connect: children
-                    .filter(
-                      (childId) => childId !== 'END' && childId !== 'START'
-                    )
-                    .map((childId) => ({ id: childId })),
-                },
-              },
-            });
-          }
-        })
-      );
-    };
-
-    await updateChildren();
-
-    console.log('UPDATE');
-
-    // Update prereqsHaveStart and childrenHaveEnd
-    const subjectUpdates = subjects.map(async (subject, index) => {
-      const prereqsHaveStart = subject.prerequisites.some(
+    const updateChildrenAndPrereqs = subjects.map(async (subject, index) => {
+      const { children, prerequisites } = subject;
+      const prereqsHaveStart = prerequisites.some(
         (prereqId) => prereqId === 'START'
       );
-      const childrenHaveEnd = subject.children.some(
-        (childId) => childId === 'END'
-      );
+      const childrenHaveEnd = children.some((childId) => childId === 'END');
 
-      await prisma.subject.update({
+      const updateData: any = {
+        prereqsHaveStart,
+        childrenHaveEnd,
+      };
+
+      if (children) {
+        updateData.children = {
+          connect: children
+            .filter((childId) => childId !== 'END' && childId !== 'START')
+            .map((childId) => ({ id: childId })),
+        };
+      }
+
+      return prisma.subject.update({
         where: { id: createdSubjects[index].id },
-        data: {
-          prereqsHaveStart,
-          childrenHaveEnd,
-        },
+        data: updateData,
       });
     });
 
-    await Promise.all(subjectUpdates);
+    await Promise.all(updateChildrenAndPrereqs);
 
     return NextResponse.json({ message: 'Learning path created successfully' });
   } catch (error) {
-    NextResponse.json({ error: 'Failed to create learning path' });
+    return NextResponse.json({ error: 'Failed to create learning path' });
   }
 }

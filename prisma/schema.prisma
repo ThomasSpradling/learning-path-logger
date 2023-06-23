@@ -39,7 +39,7 @@ model Session {
 model User {
   id            String    @id @default(cuid())
   username      String    @unique
-  email         String?   @unique
+  email         String    @unique
   password      String    @default("")
   emailVerified DateTime?
   image         String?
@@ -50,47 +50,45 @@ model User {
 }
 
 model LearningPath {
-  id      String    @id @default(cuid())
-  title   String
-  subjects  Subject[]
-  units     Unit[]
+  id       String    @id @default(cuid())
+  title    String
+  subjects Subject[]
+  units    Unit[]
 
-  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   backdrop String
   complete Boolean
 }
 
 model Subject {
-  id              String        @id @default(cuid())
-  title           String
-  content         String?
-  prerequisites   Subject[]     @relation("Prerequisites")
-  children        Subject[]     @relation("Prerequisites")
+  id            String    @id @default(cuid())
+  title         String
+  content       String?
+  prerequisites Subject[] @relation("Prerequisites")
+  children      Subject[] @relation("Prerequisites")
 
-  learningPath    LearningPath  @relation(fields: [learningPathId], references: [id], onDelete: Cascade)
-  learningPathId  String
+  learningPath   LearningPath @relation(fields: [learningPathId], references: [id], onDelete: Cascade)
+  learningPathId String
 
-  unit           Unit           @relation(fields: [unitId], references: [id])
-  unitId         String
+  unit   Unit   @relation(fields: [unitId], references: [id])
+  unitId String
 
-  complete       Boolean       @default(false)
+  complete Boolean @default(false)
 
   order Int @default(0)
 
-  prereqsHaveStart Boolean    @default(false)
-  childrenHaveEnd Boolean    @default(false)
+  prereqsHaveStart Boolean @default(false)
+  childrenHaveEnd  Boolean @default(false)
 }
 
 model Unit {
-  id  String @id @default(cuid())
-  title String
-  order Int
+  id       String    @id @default(cuid())
+  title    String
+  order    Int
   subjects Subject[]
 
-  learningPath LearningPath @relation(fields: [learningPathId], references: [id], onDelete: Cascade)
+  learningPath   LearningPath @relation(fields: [learningPathId], references: [id], onDelete: Cascade)
   learningPathId String
 }
-
-

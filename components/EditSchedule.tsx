@@ -6,9 +6,11 @@ import { Schedule } from '@/types/LearningPathTypes';
 export default function EditSchedule({
   units,
   schedule,
+  showAdd,
 }: {
   units: { id: string; title: string; order: number }[];
   schedule: Schedule;
+  showAdd: boolean;
 }) {
   const addUnit = useStore((state) => state.addUnit);
 
@@ -22,12 +24,14 @@ export default function EditSchedule({
           {units.map((unit) => (
             <UnitItem key={unit.id} unit={unit} schedule={schedule} />
           ))}
-          <button
-            className='bg-white border-2 border-roseQuartz w-1/3 p-3 rounded-lg block hover:bg-gray-100 text-lg'
-            onClick={handleAddUnit}
-          >
-            Add Unit
-          </button>
+          {showAdd && (
+            <button
+              className='bg-white border-2 border-roseQuartz w-1/3 p-3 rounded-lg block hover:bg-gray-100 text-lg'
+              onClick={handleAddUnit}
+            >
+              Add Unit
+            </button>
+          )}
         </div>
       </div>
     </div>

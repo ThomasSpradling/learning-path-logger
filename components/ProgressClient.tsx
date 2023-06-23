@@ -20,8 +20,6 @@ export default function ProgressClient({
   const subjects = useStore((state) => state.subjects);
   const setSubjects = useStore((state) => state.setSubjects);
 
-  console.log(graph);
-
   useEffect(() => {
     setSubjects(data);
   }, []);

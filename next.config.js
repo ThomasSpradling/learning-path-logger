@@ -3,6 +3,10 @@ const removeImports = require('next-remove-imports')();
 module.exports = removeImports({});
 
 const nextConfig = {
+  publicRuntimeConfig: {
+    cloudName: process.env.CLOUDINARY_NAME,
+    cloudPresetName: process.env.CLOUDINARY_PRESET_NAME,
+  },
   async redirects() {
     return [
       {

@@ -1,13 +1,4 @@
-import { SubjectProgress } from '@/types/LearningPathTypes';
-import { convertToGraph } from '@/utils';
-import { useStore } from '@/zustand/store';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import Graph from '@/components/Graph';
-import EditSchedule from '@/components/EditSchedule';
 import ProgressClient from '@/components/ProgressClient';
-import { exampleSubjects } from '@/mock';
 import prisma from '@/lib/db';
 
 export default async function Page({

@@ -1,20 +1,17 @@
-'use client';
-
+import { getAuthSession } from '@/lib/auth';
+import { getServerSession } from 'next-auth';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { FaUser } from 'react-icons/fa';
+import SignOutButton from './SignoutButton';
 
-export default function NavBar() {
-  const { data: session, status } = useSession();
-
-  const handleSignOut = () => {
-    signOut();
-  };
+export default async function NavBar() {
+  const session = await getAuthSession();
 
   return (
     <nav className='flex w-full bg-thisle p-6 z-20 text-raisinBlack'>
       <div className='text-lg font-bold'>
-        <Link href='/home'>Logo</Link>
+        <Link href='/home'>Path.ly</Link>
       </div>
       <div className='flex w-full justify-between items-center text-sm'>
         <div className=''>
@@ -24,24 +21,20 @@ export default function NavBar() {
           >
             Learning Plans
           </Link>
-          <Link
+          {/* <Link
             href='/schedule'
             className='ml-6 cursor-pointer inline-block text-englishViolet hover:text-raisinBlack'
           >
             Schedule
-          </Link>
+          </Link> */}
         </div>
 
-        {status === 'authenticated' ? (
+        {session?.user ? (
           <div>
-            <button
-              className='ml-6 cursor-pointer inline-block text-englishViolet hover:text-raisinBlack'
-              onClick={handleSignOut}
-            >
-              Sign Out
-            </button>
+            <SignOutButton />
             <div className='ml-6 cursor-pointer text-englishViolet hover:text-raisinBlack inline-flex items-center gap-5'>
-              <span>{session.user?.email}</span>
+              {/* @ts-ignore */}
+              <span>{session.user.username}</span>
               <FaUser className='text-xl' />
             </div>
           </div>

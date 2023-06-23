@@ -1,11 +1,18 @@
+import AddPhoto from '@/components/AddPhoto';
 import SubjectLink from '@/components/SubjectLink';
+import { getAuthSession } from '@/lib/auth';
 import prisma from '@/lib/db';
-import { exampleSubjects } from '@/mock';
 import { convertSubjectPreviewToSchedule } from '@/utils';
+import axios from 'axios';
 import Link from 'next/link';
 import { Fragment } from 'react';
-import { FaChevronLeft, FaNetworkWired, FaTrash } from 'react-icons/fa';
-import Modal from 'react-modal';
+import {
+  FaCamera,
+  FaChevronLeft,
+  FaNetworkWired,
+  FaPlus,
+  FaTrash,
+} from 'react-icons/fa';
 
 export default async function Layout({
   params,
@@ -14,8 +21,7 @@ export default async function Layout({
   params: { path_id: string };
   children: React.ReactNode;
 }) {
-  // TODO: Add verification by session
-  const isUsers = true;
+  const session = await getAuthSession();
 
   // const meta = {
   //   id: '2',
@@ -31,10 +37,14 @@ export default async function Layout({
       id: params.path_id,
     },
     select: {
+      id: true,
       title: true,
       backdrop: true,
+      userId: true,
     },
   });
+
+  const userAuthenticated = session?.user && session.user.id === meta?.userId;
 
   const data = await prisma.subject.findMany({
     where: { learningPathId: params.path_id },
@@ -62,8 +72,6 @@ export default async function Layout({
     },
   });
 
-  console.log('DATA', data);
-
   const normalizedData = data.map((subject) => ({
     ...subject,
     prerequisites: [
@@ -90,7 +98,7 @@ export default async function Layout({
           <FaChevronLeft />
           <p>back</p>
         </Link>
-        {isUsers && (
+        {userAuthenticated && (
           <button className='bg-red-100 text-red-400 absolute z-20 p-2 rounded-lg right-4 top-4 text-3xl transition-all hover:bg-red-200'>
             <FaTrash />
           </button>
@@ -98,6 +106,9 @@ export default async function Layout({
         <h2 className='text-3xl font-bold text-white absolute z-20'>
           {meta?.title}
         </h2>
+        {userAuthenticated && !meta?.backdrop && (
+          <AddPhoto pathId={params.path_id} />
+        )}
         <Link
           href={`/learning-path/progress/${params.path_id}`}
           className='text-xl items-center flex font-bold absolute z-20 gap-4 bottom-5 transition-all bg-thisle p-4 rounded-lg hover:bg-white hover:text-roseQuartz'
