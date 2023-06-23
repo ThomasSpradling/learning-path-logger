@@ -7,6 +7,9 @@ interface RequestBody {
 }
 
 export async function POST(request: Request) {
+  if (!request.body) {
+    return new Response('No body found');
+  }
   const body: RequestBody = await request.json();
 
   const user = await prisma.user.findFirst({
@@ -19,5 +22,5 @@ export async function POST(request: Request) {
     const { password, ...userWithoutPass } = user;
     return new Response(JSON.stringify(userWithoutPass));
   }
-  return new Response(JSON.stringify(null));
+  return new Response('Unknown error has occured');
 }

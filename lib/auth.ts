@@ -2,6 +2,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { NextAuthOptions, getServerSession } from 'next-auth';
 import prisma from './db';
+import axios from 'axios';
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -18,19 +19,15 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
-        const loginRes = await fetch(`${process.env.NEXTAUTH_URL}/api/login`, {
-          method: 'POST',
-          headers: {
-            'Content-Types': 'application/json',
-          },
-          body: JSON.stringify({
+        const loginRes = await axios.post(
+          `${process.env.NEXTAUTH_URL}/api/login`,
+          {
             username: credentials?.username,
             password: credentials?.password,
-          }),
-        });
+          }
+        );
 
-        const user = await loginRes.json();
-        return user || null;
+        return loginRes.data;
       },
     }),
   ],
